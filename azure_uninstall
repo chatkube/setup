@@ -1,0 +1,2 @@
+#!/bin/bash
+for i in `az ad sp list | jq -r '.[] | { name: .appDisplayName, id: .appId } | select( .name | startswith("ChatKubeServicePrincipal")) | .id'`; do echo $i && az ad sp delete --id $i; done
