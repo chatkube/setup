@@ -5,6 +5,6 @@ az account list | jq -r '.[] | select(.state == "Enabled" and .isDefault == true
 SUBSCRIPTION_ID=$( cat ${SUBSCRIPTION_OUTPUT_FILE} | jq -r .id )
 TENANT_ID=$( cat ${SUBSCRIPTION_OUTPUT_FILE} | jq -r .tenantId )
 SERVICE_PRICIPAL_NAME=ChatKubeServicePrincipal_${TIMESTAMP}
-az ad sp create-for-rbac --name ${SERVICE_PRICIPAL_NAME} --role contributor --scope /subscriptions/${SUBSCRIPTION_ID} > ${SERVICE_PRICIPAL_NAME}
+az ad sp create-for-rbac --name ${SERVICE_PRICIPAL_NAME} --role contributor --scope /subscriptions/${SUBSCRIPTION_ID} --only-show-errors > ${SERVICE_PRICIPAL_NAME}
 cat $SERVICE_PRICIPAL_NAME  | jq -r ". | {NAME: .displayName, SUBSCRIPTION_ID: \"${SUBSCRIPTION_ID}\", TENANT_ID: .tenant, CLIENT_ID: .appId, CLIENT_SECRET: .password }" | tee RESULT_${TIMESTAMP} | jq
 npm install --save qrcode > /dev/null && cat RESULT_${TIMESTAMP} | node_modules/qrcode/bin/qrcode --small -e L
